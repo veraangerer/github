@@ -53,4 +53,20 @@ export default class GithubAPI {
       }
     });
   };
+
+  fetchIssues = ({login}, repo) => { //like userRepositories
+    return fetch(`https://api.github.com/repos/${login}/${repo}/issues`, {
+      headers: {
+        ...this.defaultHeaders
+      }
+  }).then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject();
+      }
+    });
+  };
+
+  //TODO: editIssue
 }

@@ -26,9 +26,10 @@ const fields = [
 ];
 
 class IssueForm extends MobxReactForm {
-  constructor(fields, options, issueStore, repo) {
+  constructor(fields, options, issueStore, repo, cnt) {
     super(fields, options);
     this.issueStore = issueStore;
+    this.cnt = cnt;
     this.repo = repo;
 
     extendObservable(this, {
@@ -38,7 +39,13 @@ class IssueForm extends MobxReactForm {
 
   onSuccess(form) {
     const { title, text } = form.values();
-    const resultPromise = this.issueStore.postIssue(this.repo, title, text);
+    let resultPromise = this.issueStore.postIssue(this.repo, title, text);
+  /*  if(this.cnt) {
+      resultPromise = this.issueStore.editIssue(this.repo, title, text, this.cnt)
+    } else {
+      resultPromise = this.issueStore.postIssue(this.repo, title, text);
+    }
+    */
     resultPromise
       .then(() => Toaster.create({ position: Position.TOP }).show({
         message: "issue posted",
@@ -58,7 +65,7 @@ const FormComponent = inject("form")(
     return (
       <form onSubmit={form.onSubmit}>
 
-        <FormInput form={form} field="title" />
+        <FormInput form={form} field="title" value="vera" />
         <FormInput form={form} field="text" />
 
         {form.issuePostDeferred.case({
@@ -82,20 +89,33 @@ const FormComponent = inject("form")(
 export default inject("issueStore")(
   observer(
     class IssueFormComponent extends React.Component {
-      constructor({ issueStore, route }) {
+      constructor({ issueStore, route, values }) {
         super();
+        const repo = route.params.id;
+        const filled = { fields } //options
+        if(values) {
+          filled.values = values
+        }
+      /*  const values = {
+           title: 'example',
+           text: 'asdf'
+        }
+        */
+        console.log("show values:", values)
+        //const cnt = route.params.id;
         this.state = {
-          form: new IssueForm({ fields }, { plugins }, issueStore, route.params.repo)
+          //https://github.com/johann-sonntagbauer/github/commit/2dc2fc9d19ca29d41564c81d02af6e25d45ab8fe
+          form: new IssueForm({ filled /*fields, values*/ }, { plugins }, issueStore,  route.params.id)
         };
       }
       render() {
         const { form } = this.state;
-        const {route} = this.props;
+        const { route } = this.props;
 
         return (
           <Provider form={form}>
             <div>
-            <h3>issue for {route.params.repo}</h3>
+            <h3>Issue {route.params && route.params.id} in {route.params.repo}</h3>
             <FormComponent />
             </div>
           </Provider>

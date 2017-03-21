@@ -8,63 +8,53 @@ import IssueForm from './IssueForm';
 
 export default inject("issueStore")(
   observer(
-    class RepositoryList extends React.Component {
-      constructor({ repoStore, sessionStore }) {
+    class IssueFormComponent extends React.Component {
+      constructor({ issueStore, route }) {
         super();
-        repoStore.fetchRepos();
+        const repo = route.params.repo;
+        issueStore.fetchIssues(repo);
       }
-      renderRepoList() {
-        const {sessionStore, repoStore, viewStore} = this.props;
 
-        if (sessionStore.authenticated) {
-          const repoDeferred = repoStore.repoDeferred;
-          const state = repoDeferred.state;
-          switch (state) {
-            case PENDING: {
+      getFormValues() {
+        const {issueStore, route} = this.props;
+        const cnt = route.params.id;
+        const repo = route.params.repo;
+
+        if(cnt && issueStore.issueDeferred.has(repo)) {
+          const issueDeferred = issueStore.issueDeferred.get(repo);
+          const state = issueDeferred.state;
+          switch(state) {
+            /*case PENDING: {
               return <Spinner />;
-            }
-            case REJECTED: {
-              return (
-                <div className="pt-non-ideal-state">
-                  <div
-                    className="pt-non-ideal-state-visual pt-non-ideal-state-icon"
-                  >
-                    <span className="pt-icon pt-icon-error" />
-                  </div>
-                  <h4 className="pt-non-ideal-state-title">Error occured</h4>
-                  <div className="pt-non-ideal-state-description">
-                    <Button onClick={repoStore.fetchRepos} text="retry"/>
-                  </div>
-                </div>
-              );
-            }
+            } //not sure if needed*/
             case FULFILLED: {
-              const repos = repoDeferred.value;
-              return (
-                  repos.map((repo) => {
-                    return <h2 key={repo.id} onClick={() => viewStore.push(viewStore.routes.issue({repo: repo.name}))}>
-                        {repo.name}
-                    </h2>
-                  })
-              )
-              break;
-            }
-            default: {
-              console.error("deferred state not supported", state);
+              const issue = issueDeferred.value.find((is) => {
+                  return is.cnt == cnt;
+              })
+              return <IssueForm route={route} key={cnt} values={{
+                "title": issue.title,
+                "text": issue.body
+              }} />
             }
           }
         } else {
-          return <h1>NOT AUTHENTICATED </h1>;
+          return <IssueForm route={route}/>
         }
       }
+
       render() {
+        const {route} = this.props;
         return (
-          <div>
-            <h1>Repos</h1>
-            {this.renderRepoList()}
-          </div>
+          <Provider>
+            <div>
+            <h3>testing issues</h3>
+            {this.getFormValues()}
+            </div>
+          </Provider>
         );
       }
     }
   )
 );
+
+//<IssueForm route={route} values={this.getFormValues()} />
