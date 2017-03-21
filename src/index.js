@@ -13,8 +13,9 @@ import "./index.css";
 
 // wire up dependencies
 const githubAPI = new GithubAPI({
-  userToken: "75ca222a9bce7ea552b604a6d806b33103053326"
+  userToken: "ef8a80dd6f229f7cfe7bad7e126a79fff39003d1"
 });
+//75ca222a9bce7ea552b604a6d806b33103053326
 const sessionStore = new SessionStore({ githubAPI });
 const viewStore = new ViewStore();
 const repoStore = new RepoStore({ githubAPI, sessionStore });
