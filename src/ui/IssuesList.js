@@ -15,7 +15,7 @@ export default inject("issueStore", "sessionStore", "viewStore")(
       renderIssuesList() {
         const {sessionStore, issueStore, viewStore, repo} = this.props;
         if (sessionStore.authenticated) {
-          const issueDeferred = issueStore.issueDeferred.get(repo);
+          const issueDeferred = issueStore.issueDeferred;
           //const state = issueDeferred.state;
         //  console.log("issueDeferred state on render",issueDeferred.state)
         /*  switch (state) {

@@ -25,18 +25,16 @@ export default inject("issueStore")(
           const issueDeferred = issueStore.issueDeferred.get(repo);
           const state = issueDeferred.state;//'FULLFILLED'
           switch(state) {
-            /*case PENDING: {
-            return <Spinner />;
-            } //not sure if needed*/
             case FULFILLED: {
               const issue = issueDeferred.value.find((is) => {
-                return is.cnt === cnt;
+                return is.cnt == cnt;
                 console.log("issue:", issue)
               })
               return <IssueForm route={route} key={cnt} values={{"title": issue.title, "text": issue.body}} />
               }
             }
-          } else {
+          }
+          else {
            return <IssueForm route={route}/>
           }
         }

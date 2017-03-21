@@ -38,7 +38,8 @@ class IssueForm extends MobxReactForm {
   }
 
   onSuccess(form) {
-    const { title, text } = form.values();
+    const { title, text } = form.values
+    //smth wrong here , path incorrect
     let resultPromise = this.issueStore.postIssue(this.repo, title, text, this.cnt);
     resultPromise
     .then(() => Toaster.create({ position: Position.TOP }).show({
@@ -85,19 +86,23 @@ export default inject("issueStore")(
     class IssueFormComponent extends React.Component {
       constructor({ issueStore, route, values }) {
         super();
-        const repo = route.params.id;
+        const repo = route.params.repo;
         const fillParams = { fields } //options
+        if(values) {
+          fillParams.values = values
+        }
+        console.log(repo)
         console.log("fillparams:",fillParams)
         console.log("show values:", values)
         this.state = {
           //https://github.com/johann-sonntagbauer/github/commit/2dc2fc9d19ca29d41564c81d02af6e25d45ab8fe
-          form: new IssueForm(fillParams, {plugins}, issueStore,  route.params.id)
+          form: new IssueForm(fillParams, {plugins}, issueStore, repo, route.params.id)
+          //route is correct
         };
       }
       render() {
         const { form } = this.state;
         const { route } = this.props;
-
         return (
           <Provider form={form}>
             <div>
