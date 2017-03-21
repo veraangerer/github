@@ -13,29 +13,19 @@ export default class IssueStore {
           text,
         });
       }),
-      //TODO: make issue editable
-      /*  editIssue: action("editIssue", (repo, title, text) => {
-      return githubAPI.editIssue({
-      login: sessionStore.userDeferred.value.login,
-      repo,
-      title,
-      text,
-      cnt
-      //maybe add counter later to show all issues per repo
-      });
-      }),
-      */
       issueDeferred: new Map(),
       //taken from fetchRepos in stores/repo.js
       fetchIssues: action("fetchIssues", (repo) => {
-        console.log(this.issueDeferred.has(repo))
-        // when(
-
-        /*  () => {
-        //return sessionStore.authenticated &&
-        (!this.issueDeferred.has(repo) ||
-        this.issueDeferred.has(repo) &&
-        this.issueDeferred.get(repo).state === REJECTED)
+        console.log("repo which should be fetched:", repo) //true
+        console.log("has repos:", this.issueDeferred.has(repo))
+        console.log("authenticated?",sessionStore.authenticated)
+        console.log("issue deferred:",this.issueDeferred)
+        console.log("state",this.issueDeferred.get(repo))
+        /*  when(  () => {
+        return sessionStore.authenticated &&
+        //  (!this.issueDeferred.has(repo) ||
+        //  this.issueDeferred.has(repo) &&
+        this.issueDeferred.get(repo).state === REJECTED
         },
         () => {
         const userDeferred = sessionStore.userDeferred;
@@ -43,8 +33,18 @@ export default class IssueStore {
         githubAPI.fetchIssues(userDeferred.value, repo)
         ));
         }
-        *///);
-      })
+        );*/
+      }),
+      //TODO: make issue editable
+      editIssue: action("editIssue", (repo, title, text, cnt) => {
+        return githubAPI.editIssue({
+          login: sessionStore.userDeferred.value.login,
+          repo,
+          title,
+          text,
+          cnt
+        });
+      }),
     });
   }
 }

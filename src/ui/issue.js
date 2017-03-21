@@ -5,7 +5,6 @@ import FULFILLED from "mobx-utils";
 import IssueForm from './IssueForm';
 import IssuesList from './IssuesList';
 
-
 export default inject("issueStore")(
   observer(
     class IssueFormComponent extends React.Component {
@@ -13,16 +12,18 @@ export default inject("issueStore")(
         super();
         const repo = route.params.repo;
         issueStore.fetchIssues(repo);
+        console.log("fetchIssues:",issueStore.fetchIssues(repo))
       }
 
       getFormValues() {
         const {issueStore, route} = this.props;
-        const cnt = route.params.id;
         const repo = route.params.repo;
+        const cnt = route.params.id;
+        console.log("count", route.params);
 
         if(cnt && issueStore.issueDeferred.has(repo)) {
           const issueDeferred = issueStore.issueDeferred.get(repo);
-          const state = issueDeferred.state;
+          const state = issueDeferred.state;//'FULLFILLED'
           switch(state) {
             /*case PENDING: {
             return <Spinner />;
@@ -30,25 +31,23 @@ export default inject("issueStore")(
             case FULFILLED: {
               const issue = issueDeferred.value.find((is) => {
                 return is.cnt === cnt;
+                console.log("issue:", issue)
               })
-              return <IssueForm route={route} key={cnt} values={{
-                  "title": issue.title,
-                  "text": issue.body
-                }} />
+              return <IssueForm route={route} key={cnt} values={{"title": issue.title, "text": issue.body}} />
               }
             }
           } else {
-            return <IssueForm route={route}/>
+           return <IssueForm route={route}/>
           }
         }
 
         render() {
-          const {route} = this.props;
+          const { route } = this.props;
           return (
             <Provider>
               <div>
                 {this.getFormValues()}
-                <IssuesList repo={route.params.repo}/>
+                <IssuesList repo={route.params.repo} />
               </div>
             </Provider>
           );

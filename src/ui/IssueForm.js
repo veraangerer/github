@@ -39,13 +39,7 @@ class IssueForm extends MobxReactForm {
 
   onSuccess(form) {
     const { title, text } = form.values();
-    let resultPromise = this.issueStore.postIssue(this.repo, title, text);
-    /*  if(this.cnt) {
-    resultPromise = this.issueStore.editIssue(this.repo, title, text, this.cnt)
-    } else {
-    resultPromise = this.issueStore.postIssue(this.repo, title, text);
-    }
-    */
+    let resultPromise = this.issueStore.postIssue(this.repo, title, text, this.cnt);
     resultPromise
     .then(() => Toaster.create({ position: Position.TOP }).show({
       message: "issue posted",
@@ -65,7 +59,7 @@ const FormComponent = inject("form")(
     return (
       <form onSubmit={form.onSubmit}>
 
-        <FormInput form={form} field="title" value={this.props.value} />
+        <FormInput form={form} field="title" value="vera" />
         <FormInput form={form} field="text" />
 
         {form.issuePostDeferred.case({
@@ -107,7 +101,8 @@ export default inject("issueStore")(
         return (
           <Provider form={form}>
             <div>
-              <h3>Issue {route.params && route.params.id} in {route.params.repo}</h3>
+              <h3>Create issue in {route.params.repo}</h3>
+              {console.log(route.params.id)}
               <FormComponent />
             </div>
           </Provider>
