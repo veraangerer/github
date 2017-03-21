@@ -40,22 +40,22 @@ class IssueForm extends MobxReactForm {
   onSuccess(form) {
     const { title, text } = form.values();
     let resultPromise = this.issueStore.postIssue(this.repo, title, text);
-  /*  if(this.cnt) {
-      resultPromise = this.issueStore.editIssue(this.repo, title, text, this.cnt)
+    /*  if(this.cnt) {
+    resultPromise = this.issueStore.editIssue(this.repo, title, text, this.cnt)
     } else {
-      resultPromise = this.issueStore.postIssue(this.repo, title, text);
+    resultPromise = this.issueStore.postIssue(this.repo, title, text);
     }
     */
     resultPromise
-      .then(() => Toaster.create({ position: Position.TOP }).show({
-        message: "issue posted",
-        intent: Intent.SUCCESS
-      }))
-      .catch(() => Toaster.create({ position: Position.TOP }).show({
-        message: "failed posting issue",
-        action: { text: "retry", onClick: () => form.submit() },
-        intent: Intent.DANGER
-      }));
+    .then(() => Toaster.create({ position: Position.TOP }).show({
+      message: "issue posted",
+      intent: Intent.SUCCESS
+    }))
+    .catch(() => Toaster.create({ position: Position.TOP }).show({
+      message: "failed posting issue",
+      action: { text: "retry", onClick: () => form.submit() },
+      intent: Intent.DANGER
+    }));
     this.issuePostDeferred = fromPromise(resultPromise);
   }
 }
@@ -70,20 +70,20 @@ const FormComponent = inject("form")(
 
         {form.issuePostDeferred.case({
           pending: () => <Button type="submit" loading={true} text="submit" />,
-          rejected: () => (
-            <Button type="submit" className="pt-icon-repeat" text="submit" />
-          ),
-          fulfilled: () => (
-            <Button type="submit" onClick={form.onSubmit} text="submit" />
-          )
-        })}
-        <Button onClick={form.onClear} text="clear" />
-        <Button onClick={form.onReset} text="reset" />
+        rejected: () => (
+          <Button type="submit" className="pt-icon-repeat" text="submit" />
+        ),
+        fulfilled: () => (
+          <Button type="submit" onClick={form.onSubmit} text="submit" />
+        )
+      })}
+      <Button onClick={form.onClear} text="clear" />
+      <Button onClick={form.onReset} text="reset" />
 
-        <p>{form.error}</p>
-      </form>
-    );
-  })
+      <p>{form.error}</p>
+    </form>
+  );
+})
 );
 
 export default inject("issueStore")(
@@ -107,8 +107,8 @@ export default inject("issueStore")(
         return (
           <Provider form={form}>
             <div>
-            <h3>Issue {route.params && route.params.id} in {route.params.repo}</h3>
-            <FormComponent />
+              <h3>Issue {route.params && route.params.id} in {route.params.repo}</h3>
+              <FormComponent />
             </div>
           </Provider>
         );

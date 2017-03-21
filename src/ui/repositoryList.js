@@ -40,12 +40,13 @@ export default inject("repoStore", "sessionStore", "viewStore")(
               const repos = repoDeferred.value;
               return (
                   repos.map((repo) => {
-                    return
-                    <h2
-                      key={repo.id}
-                      onClick={() => viewStore.push(viewStore.routes.issue({repo: repo.name}))}>
-                        {repo.name}
-                    </h2>
+                    return(
+                      <h2
+                        key={repo.id}
+                        onClick={() => viewStore.push(viewStore.routes.issue({repo: repo.name}))}>
+                          {repo.name}
+                      </h2>
+                    );
                   })
               )
               break;

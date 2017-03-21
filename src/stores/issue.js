@@ -14,35 +14,35 @@ export default class IssueStore {
         });
       }),
       //TODO: make issue editable
-    /*  editIssue: action("editIssue", (repo, title, text) => {
-        return githubAPI.editIssue({
-          login: sessionStore.userDeferred.value.login,
-          repo,
-          title,
-          text,
-          cnt
-          //maybe add counter later to show all issues per repo
-        });
+      /*  editIssue: action("editIssue", (repo, title, text) => {
+      return githubAPI.editIssue({
+      login: sessionStore.userDeferred.value.login,
+      repo,
+      title,
+      text,
+      cnt
+      //maybe add counter later to show all issues per repo
+      });
       }),
       */
       issueDeferred: new Map(),
       //taken from fetchRepos in stores/repo.js
       fetchIssues: action("fetchIssues", (repo) => {
         console.log(this.issueDeferred.has(repo))
-      // when(
+        // when(
 
         /*  () => {
-              //return sessionStore.authenticated &&
-            (!this.issueDeferred.has(repo) ||
-             this.issueDeferred.has(repo) &&
-             this.issueDeferred.get(repo).state === REJECTED)
-          },
-          () => {
-            const userDeferred = sessionStore.userDeferred;
-            this.issueDeferred.set(repo, fromPromise(
-              githubAPI.fetchIssues(userDeferred.value, repo)
-            ));
-          }
+        //return sessionStore.authenticated &&
+        (!this.issueDeferred.has(repo) ||
+        this.issueDeferred.has(repo) &&
+        this.issueDeferred.get(repo).state === REJECTED)
+        },
+        () => {
+        const userDeferred = sessionStore.userDeferred;
+        this.issueDeferred.set(repo, fromPromise(
+        githubAPI.fetchIssues(userDeferred.value, repo)
+        ));
+        }
         *///);
       })
     });

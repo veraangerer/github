@@ -3,6 +3,8 @@ import React from "react";
 import { observer, inject, Provider } from "mobx-react";
 import FULFILLED from "mobx-utils";
 import IssueForm from './IssueForm';
+import IssuesList from './IssuesList';
+
 
 export default inject("issueStore")(
   observer(
@@ -23,35 +25,36 @@ export default inject("issueStore")(
           const state = issueDeferred.state;
           switch(state) {
             /*case PENDING: {
-              return <Spinner />;
+            return <Spinner />;
             } //not sure if needed*/
             case FULFILLED: {
               const issue = issueDeferred.value.find((is) => {
-                  return is.cnt === cnt;
+                return is.cnt === cnt;
               })
               return <IssueForm route={route} key={cnt} values={{
-                "title": issue.title,
-                "text": issue.body
-              }} />
+                  "title": issue.title,
+                  "text": issue.body
+                }} />
+              }
             }
+          } else {
+            return <IssueForm route={route}/>
           }
-        } else {
-          return <IssueForm route={route}/>
+        }
+
+        render() {
+          const {route} = this.props;
+          return (
+            <Provider>
+              <div>
+                {this.getFormValues()}
+                <IssuesList repo={route.params.repo}/>
+              </div>
+            </Provider>
+          );
         }
       }
+    )
+  );
 
-      render() {
-        const {route} = this.props;
-        return (
-          <Provider>
-            <div>
-            {this.getFormValues()}
-            </div>
-          </Provider>
-        );
-      }
-    }
-  )
-);
-
-//<IssueForm route={route} values={this.getFormValues()} />
+  //<IssueForm route={route} values={this.getFormValues()} />

@@ -60,16 +60,16 @@ export default class ViewStore {
               return {
                 name: 'home',
                 component: () => <div>HOME</div>
-              };
-            }
-
-            return {
-              name: "notfound",
-              component: RouteNotFound
             };
           }
+
+          return {
+            name: "notfound",
+            component: RouteNotFound
+          };
         }
-      })
-    });
-  }
+      }
+    })
+  });
+}
 }
