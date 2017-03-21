@@ -29,7 +29,9 @@ export default inject("repoStore", "sessionStore", "viewStore")(
                   </div>
                   <h4 className="pt-non-ideal-state-title">Error occured</h4>
                   <div className="pt-non-ideal-state-description">
-                    <Button onClick={repoStore.fetchRepos} text="retry"/>
+                    <Button
+                      onClick={repoStore.fetchRepos}
+                      text="retry"/>
                   </div>
                 </div>
               );
@@ -38,7 +40,10 @@ export default inject("repoStore", "sessionStore", "viewStore")(
               const repos = repoDeferred.value;
               return (
                   repos.map((repo) => {
-                    return <h2 key={repo.id} onClick={() => viewStore.push(viewStore.routes.issue({repo: repo.name}))}>
+                    return
+                    <h2
+                      key={repo.id}
+                      onClick={() => viewStore.push(viewStore.routes.issue({repo: repo.name}))}>
                         {repo.name}
                     </h2>
                   })
