@@ -29,7 +29,7 @@ class IssueForm extends MobxReactForm {
   constructor(fields, options, issueStore, repo, cnt) {
     super(fields, options);
     this.issueStore = issueStore;
-    this.cnt = cnt;
+    this.cnt = cnt; //for updates
     this.repo = repo;
 
     extendObservable(this, {
@@ -65,7 +65,7 @@ const FormComponent = inject("form")(
     return (
       <form onSubmit={form.onSubmit}>
 
-        <FormInput form={form} field="title" value="vera" />
+        <FormInput form={form} field="title" value={this.props.value} />
         <FormInput form={form} field="text" />
 
         {form.issuePostDeferred.case({
@@ -92,20 +92,12 @@ export default inject("issueStore")(
       constructor({ issueStore, route, values }) {
         super();
         const repo = route.params.id;
-        const filled = { fields } //options
-        if(values) {
-          filled.values = values
-        }
-      /*  const values = {
-           title: 'example',
-           text: 'asdf'
-        }
-        */
+        const fillParams = { fields } //options
+        console.log("fillparams:",fillParams)
         console.log("show values:", values)
-        //const cnt = route.params.id;
         this.state = {
           //https://github.com/johann-sonntagbauer/github/commit/2dc2fc9d19ca29d41564c81d02af6e25d45ab8fe
-          form: new IssueForm({ filled /*fields, values*/ }, { plugins }, issueStore,  route.params.id)
+          form: new IssueForm(fillParams, {plugins}, issueStore,  route.params.id)
         };
       }
       render() {

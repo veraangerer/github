@@ -2,7 +2,6 @@ import { extendObservable, action } from "mobx";
 import { fromPromise, REJECTED } from "mobx-utils";
 //like in other stores
 
-
 export default class IssueStore {
   constructor({ githubAPI, sessionStore }) {
     extendObservable(this, {
@@ -29,9 +28,11 @@ export default class IssueStore {
       issueDeferred: new Map(),
       //taken from fetchRepos in stores/repo.js
       fetchIssues: action("fetchIssues", (repo) => {
-       when(
-          () => {
-              return sessionStore.authenticated &&
+        console.log(this.issueDeferred.has(repo))
+      // when(
+
+        /*  () => {
+              //return sessionStore.authenticated &&
             (!this.issueDeferred.has(repo) ||
              this.issueDeferred.has(repo) &&
              this.issueDeferred.get(repo).state === REJECTED)
@@ -42,7 +43,7 @@ export default class IssueStore {
               githubAPI.fetchIssues(userDeferred.value, repo)
             ));
           }
-        );
+        *///);
       })
     });
   }

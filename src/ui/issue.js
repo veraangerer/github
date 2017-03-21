@@ -1,9 +1,7 @@
 //moved codebase from repositorylist to render form and issuelist afterwards
 import React from "react";
 import { observer, inject, Provider } from "mobx-react";
-import { PENDING, REJECTED, FULFILLED } from "mobx-utils";
-import { whyRun , isObservable} from "mobx";
-import { Spinner, Button } from "@blueprintjs/core";
+import FULFILLED from "mobx-utils";
 import IssueForm from './IssueForm';
 
 export default inject("issueStore")(
@@ -29,7 +27,7 @@ export default inject("issueStore")(
             } //not sure if needed*/
             case FULFILLED: {
               const issue = issueDeferred.value.find((is) => {
-                  return is.cnt == cnt;
+                  return is.cnt === cnt;
               })
               return <IssueForm route={route} key={cnt} values={{
                 "title": issue.title,
@@ -47,7 +45,6 @@ export default inject("issueStore")(
         return (
           <Provider>
             <div>
-            <h3>testing issues</h3>
             {this.getFormValues()}
             </div>
           </Provider>
