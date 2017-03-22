@@ -15,15 +15,12 @@ export default inject("issueStore", "sessionStore", "viewStore")(
       renderIssuesList() {
         const {sessionStore, issueStore, viewStore, repo} = this.props;
         if (sessionStore.authenticated) {
-          const issueDeferred = issueStore.issueDeferred;
-          //const state = issueDeferred.state;
-        //  console.log("issueDeferred state on render",issueDeferred.state)
-        /*  switch (state) {
+          const issueDeferred = issueStore.issueDeferred.get(repo);
+        /*  const state = issueDeferred.state;
+          console.log("issueDeferred state on render",issueDeferred.state)
+          switch (state) {
             case PENDING: {
               return <Spinner />;
-            }
-            case REJECTED: {
-              return <p style={{color: 'red'}}>something went wrong</p>;
             }
             case FULFILLED: {
               const issues = issueDeferred.value;
@@ -40,6 +37,9 @@ export default inject("issueStore", "sessionStore", "viewStore")(
               )
             //  break;
             }
+            case REJECTED: {
+              return <p style={{color: 'red'}}>something went wrong</p>;
+            }
             default: {
               console.error("deferred state not supported", state);
             }
@@ -49,7 +49,7 @@ export default inject("issueStore", "sessionStore", "viewStore")(
         else {
           return <p style={{color: 'red'}}>an error occured, please check if you are logged in</p>;
           }
-                */
+          */
         }
       }
         render() {

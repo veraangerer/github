@@ -2,16 +2,16 @@ import React from "react";
 import { observer, inject } from "mobx-react";
 import { PENDING, REJECTED, FULFILLED } from "mobx-utils";
 import { Spinner, Button } from "@blueprintjs/core";
+
 export default inject("repoStore", "sessionStore", "viewStore")(
   observer(
     class RepositoryList extends React.Component {
-      constructor({ repoStore, sessionStore }) {
+      constructor({ repoStore, sessionStore, viewStore }) {
         super();
         repoStore.fetchRepos();
       }
       renderRepoList() {
         const {sessionStore, repoStore, viewStore} = this.props;
-
         if (sessionStore.authenticated) {
           const repoDeferred = repoStore.repoDeferred;
           const state = repoDeferred.state;
