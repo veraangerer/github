@@ -7,16 +7,21 @@ import Spinner from "@blueprintjs/core";
 export default inject("issueStore", "sessionStore", "viewStore")(
   observer(
     class IssuesList extends React.Component {
-      constructor({ issueStore, repo, sessionStore }) {
+      constructor({ issueStore, repo, sessionStore, route}) {
         super();
         issueStore.fetchIssues(repo);
+        console.log(issueStore.fetchIssues(repo))
       }
 
       renderIssuesList() {
-        const {sessionStore, issueStore, viewStore, repo} = this.props;
+        const {sessionStore, issueStore, viewStore, route, repo} = this.props;
         if (sessionStore.authenticated) {
-          const issueDeferred = issueStore.issueDeferred.get(repo);
-        /*  const state = issueDeferred.state;
+        //  issueStore.fetchIssues(repo);
+        // const issueDeferred = issueStore.issueDeferred.get(repo);
+          const issueDeferred = issueStore.issueDeferred;
+          const state = issueDeferred.state;
+          console.log("issueDeferred", issueDeferred);
+        //  console.log("route:", route)
           console.log("issueDeferred state on render",issueDeferred.state)
           switch (state) {
             case PENDING: {
@@ -27,32 +32,33 @@ export default inject("issueStore", "sessionStore", "viewStore")(
               return (
                 issues.map((issues) => {
                   return(
-                    <h3
-                      key={issues.id}
-                      onClick={() => viewStore.push(viewStore.routes.issue({repo, id: issues.cnt}))}>
-                      {issues.title}
-                    </h3>
+                    <div>
+                      <h3 key={issues.id}>
+                        {issues.title}
+                      </h3>
+                      <p>{issues.text}</p>
+                      <button onClick={() => viewStore.push(viewStore.routes.issue({repo, id: issues.cnt}))} />
+                    </div>
                   );
                 })
               )
-            //  break;
+              //  break;
             }
             case REJECTED: {
               return <p style={{color: 'red'}}>something went wrong</p>;
-            }
-            default: {
-              console.error("deferred state not supported", state);
+              }
+              default: {
+                console.error("deferred state not supported", state);
+              }
             }
           }
+          else {
+            return <p style={{color: 'red'}}>an error occured, please check if you are logged in</p>
+          }
+        }
 
-        }
-        else {
-          return <p style={{color: 'red'}}>an error occured, please check if you are logged in</p>;
-          }
-          */
-        }
-      }
         render() {
+          //const {route} = this.props;
           return (
             <div>
               <h2>List of issues</h2>

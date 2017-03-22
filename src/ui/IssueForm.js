@@ -7,6 +7,10 @@ import { fromPromise } from "mobx-utils";
 import { Button, Intent, Toaster, Position } from "@blueprintjs/core";
 import validatorjs from "validatorjs";
 import FormInput from './formInput';
+import IssuesList from './IssuesList';
+import { PENDING, REJECTED, FULFILLED } from "mobx-utils";
+
+
 
 const plugins = { dvr: validatorjs };
 
@@ -81,16 +85,19 @@ const FormComponent = inject("form")(
 })
 );
 
-export default inject("issueStore")(
+export default inject("issueStore", "sessionStore")(
   observer(
     class IssueFormComponent extends React.Component {
-      constructor({ issueStore, route, values }) {
+      constructor({ issueStore, route, values, sessionStore}) {
         super();
         const repo = route.params.repo;
         const fillParams = { fields } //options
+        //issueStore.fetchIssues(route.params.repo)
+
         //console.log(repo)
-        //console.log("fillparams:",fillParams)
+        console.log("fillparams:",fillParams)
         //console.log("show values:", values)
+        //issueStore.fetchIssues(route.params.repo)
         this.state = {
           //https://github.com/johann-sonntagbauer/github/commit/2dc2fc9d19ca29d41564c81d02af6e25d45ab8fe
           form: new IssueForm(fillParams, {plugins}, issueStore, repo) //route.params.id
@@ -104,7 +111,6 @@ export default inject("issueStore")(
           <Provider form={form}>
             <div>
               <h3>Create issue in {route.params.repo}</h3>
-              {console.log(route.params.id)}
               <FormComponent />
             </div>
           </Provider>

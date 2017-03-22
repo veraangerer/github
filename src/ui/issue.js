@@ -5,7 +5,7 @@ import FULFILLED from "mobx-utils";
 import IssueForm from './IssueForm';
 import IssuesList from './IssuesList';
 
-export default inject("issueStore")(
+export default inject("issueStore", "sessionStore")(
   observer(
     class IssueFormComponent extends React.Component {
       constructor({ issueStore, route }) {
@@ -22,7 +22,8 @@ export default inject("issueStore")(
         console.log("count", route.params);
 
         if(cnt && issueStore.issueDeferred.has(repo)) {
-          const issueDeferred = issueStore.issueDeferred.get(repo);
+        //  const issueDeferred = issueStore.issueDeferred.get(repo);
+          const issueDeferred = issueStore.issueDeferred;
           const state = issueDeferred.state;//'FULLFILLED'
           switch(state) {
             case FULFILLED: {
