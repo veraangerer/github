@@ -39,7 +39,7 @@ export default inject("issueStore", "sessionStore")(
            return <IssueForm route={route}/>
           }
         }
-
+//it is not rendering issueslist , issueDeferred is not defined, why???
         render() {
           const { route } = this.props;
           return (
